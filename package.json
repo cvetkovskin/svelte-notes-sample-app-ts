@@ -1,0 +1,36 @@
+{
+  "name": "svelte-notes-sample-app-ts",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint": "npx eslint --ext .js,.svelte --ignore-path .gitignore src"
+  },
+  "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.15",
+    "@tsconfig/svelte": "^2.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-svelte3": "^3.2.0",
+    "prettier": "^2.3.2",
+    "prettier-plugin-svelte": "^2.3.1",
+    "sass": "^1.36.0",
+    "svelte": "^3.37.0",
+    "svelte-check": "^2.1.0",
+    "svelte-fa": "^2.2.1",
+    "svelte-preprocess": "^4.7.2",
+    "tslib": "^2.2.0",
+    "typescript": "^4.3.2",
+    "vite": "^2.4.3"
+  },
+  "dependencies": {
+    "moment": "^2.29.1"
+  }
+}
