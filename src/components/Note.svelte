@@ -3,10 +3,10 @@
   //  Imports
   // ---------------------------------------------------------
 
-  import moment from 'moment'
   import Fa from 'svelte-fa/src/fa.svelte'
   import { faStar } from '@fortawesome/free-solid-svg-icons';
   import { createEventDispatcher } from 'svelte';
+  import { formatDate } from '@/libs/utils'
 
   // ---------------------------------------------------------
   //  Props
@@ -25,23 +25,6 @@
   // ---------------------------------------------------------
 
   const dispatch = createEventDispatcher();
-
-  /**
-   * Format a date into a humanized time sentence if it's in the same 
-   * day or otherwise display a date in the YYYY/MM/DD format
-   *
-   * @param {String} dateString
-   * @returns {String}
-   */
-  const formatDate = dateString => {
-    const date = moment(dateString, 'YYYYMMDDHHmmss')
-
-    if (moment().isSame(date, 'day')) {
-      return moment.duration(date.diff(moment(), 'milliseconds')).humanize(true)
-    } else {
-      return date.format('YYYY/MM/DD')
-    }  
-  }
 
   /**
    * Trim the content if longer than 100 characters and add ellipsis

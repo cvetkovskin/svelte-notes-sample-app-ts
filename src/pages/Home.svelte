@@ -5,6 +5,7 @@
 
   import Fa from 'svelte-fa/src/fa.svelte'
   import { faPlus } from '@fortawesome/free-solid-svg-icons';
+  import Modal from '@/components/Modal.svelte'
 
   // ---------------------------------------------------------
   //  Type Imports
@@ -18,6 +19,7 @@
 
   import Note from '@/components/Note.svelte'
   import EditNoteModal from '@/components/EditNoteModal.svelte'
+  import DeleteNoteModal from '@/components/DeleteNoteModal.svelte'
 
   // ---------------------------------------------------------
   //  Varaible Declarations
@@ -26,8 +28,6 @@
   let notesJSONString: string = localStorage.getItem('notes')
 
   let notes: Array<NoteType> = []
-  let noteToEdit: NoteType | Record<string, unknown> | undefined
-  let showEditModal = false
 
   // Notes initialization
   if (notesJSONString) {
@@ -66,8 +66,12 @@
   }
 
   // ---------------------------------------------------------
-  //  Methods
+  //  Edit Modal Methods
   // ---------------------------------------------------------
+
+  // For Editing
+  let noteToEdit: NoteType | Record<string, unknown> | undefined
+  let showEditModal = false
 
   /**
    * Display the Note details modal
@@ -92,6 +96,43 @@
     noteToEdit = {}
     showEditModal = false
   }
+
+  // ---------------------------------------------------------
+  //  Delete Modal Methods
+  // ---------------------------------------------------------
+
+  // For Deleting
+  let noteToDelete: NoteType | Record<string, unknown> | undefined
+  let showDeleteModal = false
+
+  /**
+   * Display the Note details modal
+   *
+   * @param {NoteType} note
+   */
+  const openDeleteNote = (event: CustomEvent) => {
+    const deleteNoteIndex = event.detail as number
+
+    const noteIndex = notes.findIndex(item => item.id === deleteNoteIndex)
+
+    if (noteIndex !== -1) {
+      noteToDelete = notes[noteIndex]
+      showDeleteModal = true
+    }
+  }
+
+  /**
+   * Close the Note details modal
+   *
+   */
+  const closeDeleteModal = () => {
+    noteToDelete = {}
+    showDeleteModal = false
+  }
+
+  // ---------------------------------------------------------
+  //  Note Related Methods
+  // ---------------------------------------------------------
 
   /**
    * Save notes in the local storage
@@ -150,6 +191,7 @@
    * @param {Number} event.detail
    */
   const deleteNote  = (event: CustomEvent) => {
+    closeDeleteModal()
     closeEditModal()
 
     const deleteNoteIndex = event.detail as number
@@ -185,8 +227,16 @@
   <EditNoteModal
     {...noteToEdit}
     on:save="{saveNote}"
-    on:delete="{deleteNote}"
+    on:delete="{openDeleteNote}"
     on:close="{closeEditModal}"
+  />
+{/if}
+
+{#if showDeleteModal}
+  <DeleteNoteModal
+    {...noteToDelete}
+    on:delete="{deleteNote}"
+    on:close="{closeDeleteModal}"
   />
 {/if}
 
