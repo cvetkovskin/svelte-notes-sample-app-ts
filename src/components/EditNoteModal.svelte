@@ -132,7 +132,7 @@
 <style lang="scss">
   .modal {
     &-body {
-      width: 55vw;
+      width: 700px;
       padding: 20px 15px 10px;
       display: grid;
       grid-template-columns: 1fr 3fr;
