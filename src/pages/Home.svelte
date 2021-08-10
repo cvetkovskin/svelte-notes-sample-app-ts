@@ -1,23 +1,27 @@
 <script lang="ts">
-  // -------------------
+  // ---------------------------------------------------------
   //  Global Imports
-  // -------------------
+  // ---------------------------------------------------------
 
   import Fa from 'svelte-fa/src/fa.svelte'
   import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-  // -------------------
+  // ---------------------------------------------------------
   //  Type Imports
-  // -------------------
+  // ---------------------------------------------------------
 
   import type { NoteType } from '@/types/app'
 
-  // -------------------
+  // ---------------------------------------------------------
   //  Component Imports
-  // -------------------
+  // ---------------------------------------------------------
 
   import Note from '@/components/Note.svelte'
   import EditNoteModal from '@/components/EditNoteModal.svelte'
+
+  // ---------------------------------------------------------
+  //  Varaible Declarations
+  // ---------------------------------------------------------
 
   let notesJSONString: string = localStorage.getItem('notes')
 
@@ -25,6 +29,7 @@
   let noteToEdit: NoteType | Record<string, unknown> | undefined
   let showEditModal = false
 
+  // Notes initialization
   if (notesJSONString) {
     try {
       notes = JSON.parse(notesJSONString) as NoteType[]
@@ -60,6 +65,15 @@
     ]
   }
 
+  // ---------------------------------------------------------
+  //  Methods
+  // ---------------------------------------------------------
+
+  /**
+   * Display the Note details modal
+   *
+   * @param {NoteType} note
+   */
   const openEditNote = (note?: NoteType) => {
     noteToEdit = {}
 
@@ -70,11 +84,33 @@
     showEditModal = true
   }
 
+  /**
+   * Close the Note details modal
+   *
+   */
   const closeEditModal = () => {
     noteToEdit = {}
     showEditModal = false
   }
 
+  /**
+   * Save notes in the local storage
+   */
+  const saveNotesToStorage = () => {
+    // for reactivity purposes
+    notes = notes
+
+    // save it in the local storage
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }
+
+  /**
+   * Toggle the favorite flag of a given post
+   * and save the changes to local storage
+   *
+   * @param {CustomEvent} event
+   * @param {Number} event.detail
+   */
   const toggleFavorite = (event: CustomEvent) => {
     const noteId: number = (event.detail as number)
 
@@ -83,12 +119,49 @@
     if (note) {
       note.isFavorite = !note.isFavorite
 
-      // for reactivnes purposes
-      notes = notes
-
-      // save it in the local storage
-      localStorage.setItem('notes', JSON.stringify(notes))
+      saveNotesToStorage()
     }
+  }
+
+  /**
+   * Update the eixting note or add the new note
+   *
+   * @param {CustomEvent} event
+   * @NoteType {Number} event.detail
+   */
+  const saveNote = (event: CustomEvent) => {
+    closeEditModal()
+
+    const note = event.detail as NoteType
+    const noteIndex = notes.findIndex(item => item.id === note.id)
+    
+    if (noteIndex !== -1) {
+      notes[noteIndex] = note    
+    } else {
+      notes.push(note)
+    }
+
+    saveNotesToStorage()
+  }
+
+  /**
+   * 
+   * @param {CustomEvent} event
+   * @param {Number} event.detail
+   */
+  const deleteNote  = (event: CustomEvent) => {
+    closeEditModal()
+
+    const deleteNoteIndex = event.detail as number
+    const noteIndex = notes.findIndex(item => item.id === deleteNoteIndex)
+    
+    if (noteIndex !== -1) {
+      notes.splice(noteIndex, 1)
+    }
+
+    console.log(notes)
+
+    saveNotesToStorage()
   }
 </script>
 
@@ -111,6 +184,8 @@
 {#if showEditModal}
   <EditNoteModal
     {...noteToEdit}
+    on:save="{saveNote}"
+    on:delete="{deleteNote}"
     on:close="{closeEditModal}"
   />
 {/if}

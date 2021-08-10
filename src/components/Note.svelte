@@ -1,16 +1,16 @@
 <script lang="ts">
-  // -------------------
+  // ---------------------------------------------------------
   //  Imports
-  // -------------------
+  // ---------------------------------------------------------
 
   import moment from 'moment'
   import Fa from 'svelte-fa/src/fa.svelte'
   import { faStar } from '@fortawesome/free-solid-svg-icons';
   import { createEventDispatcher } from 'svelte';
 
-  // -------------------
+  // ---------------------------------------------------------
   //  Props
-  // -------------------
+  // ---------------------------------------------------------
 
   export let id: number
   export let title: string
@@ -20,9 +20,9 @@
   export let tags: string[]
 
 
-  // -------------------
+  // ---------------------------------------------------------
   //  Methods Declarations
-  // -------------------
+  // ---------------------------------------------------------
 
   const dispatch = createEventDispatcher();
 
@@ -88,25 +88,6 @@
     display: grid;
     grid-template-rows: 1fr 4fr 2fr 1fr;
 
-    &-add {
-      background-color: #d6d4d4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: none;
-      border: 4px dashed #a29f9f;
-      width: 144px;
-      height: 189px;
-      color: #a29f9f;
-      margin-right: 15px;
-      padding: 15px;
-      border-radius: 10px;
-
-      &:hover {
-          background-color: #c5c5c5;
-      }
-    }
-
     .title {
       font-weight: bold;
       margin-bottom: 10px;
@@ -114,6 +95,7 @@
 
     .preview {
       font-size: 15px;
+      word-break: break-word;
     }
 
     .tag {
@@ -127,6 +109,7 @@
       &-wrapper {
         display: flex;
         align-items: flex-end;
+        flex-wrap: wrap;
       }
     }
 
