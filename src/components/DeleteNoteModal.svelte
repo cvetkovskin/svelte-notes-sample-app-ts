@@ -48,7 +48,7 @@
   .modal {
     &-body {
       padding: 30px 15px;
-      width: 330px;
+      width: 340px;
    }
 
    &-footer {
