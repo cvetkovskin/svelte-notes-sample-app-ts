@@ -5,7 +5,6 @@
 
   import Fa from 'svelte-fa/src/fa.svelte'
   import { faPlus } from '@fortawesome/free-solid-svg-icons';
-  import Modal from '@/components/Modal.svelte'
 
   // ---------------------------------------------------------
   //  Type Imports
